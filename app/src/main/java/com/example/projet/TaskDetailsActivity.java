@@ -51,71 +51,52 @@ public class TaskDetailsActivity extends AppCompatActivity {
         String dueDate = intent.getStringExtra("dueDate");
         int status = intent.getIntExtra("status", 0);
 
-
-
-// Log the task data for debugging
-
+        // Log the task data for debugging
         Log.d("TaskDetailsActivity", "Task ID: " + taskId);
-
         Log.d("TaskDetailsActivity", "Task Title: " + title);
-
         Log.d("TaskDetailsActivity", "Task Description: " + description);
-
         Log.d("TaskDetailsActivity", "Task Due Date: " + dueDate);
-
         Log.d("TaskDetailsActivity", "Task Status: " + status);
 
-
-
-// Populate the views with task data
-
+        // Populate the views with task data
         titleEditText.setText(title);
         descriptionEditText.setText(description);
         dueDateTextView.setText(dueDate);
         statusCheckBox.setChecked(status == 1);
 
-
-
-
-// Set the click listener for the Save button
+        // Set the click listener for the Save button
         saveButton.setOnClickListener(v -> {
             String updatedTitle = titleEditText.getText().toString().trim();
             String updatedDescription = descriptionEditText.getText().toString().trim();
-            String updatedDueDateStr = dueDateTextView.getText().toString().trim();
+            String updatedDueDate = dueDateTextView.getText().toString().trim();
 
-            // Parse the updatedDueDate string using Java Time API
-            java.time.LocalDateTime localDateTime = java.time.LocalDateTime.parse(updatedDueDateStr, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            long dueDateInMillis = localDateTime.atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli();
+            // Parse the updatedDueDate string using a specific format
+            /*
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // Adjust format as needed
+            Date parsedDueDate;
+            try {
+                parsedDueDate = sdf.parse(updatedDueDate);
+            } catch (ParseException e) {
+                Log.e("TaskDetailsActivity", "Error parsing due date: " + e.getMessage(), e);
+                Toast.makeText(this, "Error parsing due date. Please check the format.", Toast.LENGTH_SHORT).show();
+                return; // Exit the click listener
+            }
 
+            long dueDateInMillis = parsedDueDate.getTime();
+*/
             int updatedStatus = statusCheckBox.isChecked() ? 1 : 0;
 
-            dbHelper.updateTask(taskId, updatedTitle, updatedDescription, updatedDueDateStr, updatedStatus);
+            dbHelper.updateTask(taskId, updatedTitle, updatedDescription, updatedDueDate, updatedStatus);
             Toast.makeText(this, "Tâche mise à jour", Toast.LENGTH_SHORT).show();
             finish();
         });
 
-
-// Set the click listener for the Delete button
-
+        // Set the click listener for the Delete button
         deleteButton.setOnClickListener(v -> {
-
-// Delete the task from the database
-
             dbHelper.deleteTask(taskId);
-
             Toast.makeText(this, "Tâche supprimée", Toast.LENGTH_SHORT).show();
-
-
-
-// Close the activity
-
             finish();
-
         });
-
-
-
-
 
         shareButton.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -125,7 +106,6 @@ public class TaskDetailsActivity extends AppCompatActivity {
         });
 
         setReminderButton.setOnClickListener(v -> {
-            // Assuming updatedDueDate is already in the desired format (e.g., "2024-12-15 12:00:00")
             String updatedDueDate = dueDateTextView.getText().toString().trim();
 
             // Directly set the due date as event location
