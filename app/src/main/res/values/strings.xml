@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">projet</string>
+    <string name="description">Description</string>
+    <string name="titre">Titre</string>
+    <string name="date_d_ch_ance">Date d\'échéance</string>
+    <string name="statut_complet">Statut (Complet)</string>
+    <string name="mettre_jour">Mettre à Jour</string>
+    <string name="supprimer">Supprimer</string>
 </resources>

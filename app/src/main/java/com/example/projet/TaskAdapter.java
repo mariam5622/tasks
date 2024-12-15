@@ -1,6 +1,8 @@
 package com.example.projet;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,12 +39,24 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         holder.title.setText(task.getTitle());
         holder.status.setChecked(task.getStatus() == 1);
 
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, TaskDetailsActivity.class);
+            intent.putExtra("id", task.getId());
+            intent.putExtra("title", task.getTitle());
+            intent.putExtra("description", task.getDescription());
+            intent.putExtra("dueDate", task.getDueDate());
+            intent.putExtra("status", task.getStatus());
+            context.startActivity(intent);
+            Log.d("TaskAdapter", "Task Clicked: ID=" + task.getId() + ", Title=" + task.getTitle());
+
+        });
+
+
         holder.status.setOnCheckedChangeListener((buttonView, isChecked) -> {
             dbHelper.updateTaskStatus(task.getId(), isChecked ? 1 : 0);
         });
 
-        holder.itemView.setOnClickListener(v -> {
-        });
+
     }
 
 

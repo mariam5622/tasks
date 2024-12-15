@@ -90,4 +90,23 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE);
         onCreate(db);
     }
+
+    public void updateTask(int id, String title, String description, String dueDate, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TITLE, title);
+        values.put(DESCRIPTION, description);
+        values.put(DUE_DATE, dueDate);
+        values.put(STATUS, status);
+
+        db.update(TABLE, values, ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
+    public void deleteTask(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE, ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
 }
